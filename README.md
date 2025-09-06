@@ -30,5 +30,34 @@ Whether you’re a beginner exploring Algorand smart contracts or a developer bu
 ---
 
 ## 📝 Smart Contract Code  
-```typescript
-//paste your code
+import { Contract, GlobalState, uint64 } from "@algorandfoundation/algorand-typescript"
+
+export class Voting extends Contract {
+  
+  // Global state variables
+  candidateA = GlobalState<uint64>({ key: "candidateA", initialValue: 0 });
+  candidateB = GlobalState<uint64>({ key: "candidateB", initialValue: 0 });
+
+  // Function to vote for Candidate A
+  voteForA(): uint64 {
+    this.candidateA.value = this.candidateA.value + 1;
+    return this.candidateA.value;
+  }
+
+  // Function to vote for Candidate B
+  voteForB(): uint64 {
+    this.candidateB.value = this.candidateB.value + 1;
+    return this.candidateB.value;
+  }
+
+  // Get current winner
+  getWinner(): string {
+    if (this.candidateA.value > this.candidateB.value) {
+      return "Candidate A";
+    } else if (this.candidateB.value > this.candidateA.value) {
+      return "Candidate B";
+    } else {
+      return "Tie";
+    }
+  }
+}
